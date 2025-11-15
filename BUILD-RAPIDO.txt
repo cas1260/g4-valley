@@ -1,0 +1,83 @@
+╔═══════════════════════════════════════════════════════════════════════╗
+║                                                                       ║
+║   🚀 GERAR BUILD COM TEXTOS RESPONSIVOS - COMANDO RÁPIDO             ║
+║                                                                       ║
+╚═══════════════════════════════════════════════════════════════════════╝
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ⚡ COPIE E COLE ESTE COMANDO NO TERMINAL:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+cd /Users/soares/Desktop/Projetos/g4vallues && npm run build
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📋 PASSO A PASSO:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Abra o Terminal (Command + Espaço → digite "Terminal")
+
+2. Cole o comando acima e pressione Enter
+
+3. Aguarde o build finalizar (~1-2 segundos)
+
+4. Pronto! Os arquivos estarão em:
+   /Users/soares/Desktop/Projetos/g4vallues/dist/
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✅ O QUE FOI INCLUÍDO NESTE BUILD:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✓ Textos justificados (text-justify)
+✓ Textos responsivos:
+  → Mobile: textos resumidos (até 767px)
+  → Desktop/Tablet: textos expandidos com detalhes (768px+)
+
+✓ 21 textos atualizados:
+  → HeroSection (2 textos)
+  → ProblemsSection (1 texto)
+  → ServicesSection (5 textos)
+  → CredibilitySection (13 textos)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📤 APÓS O BUILD:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Copie TODO o conteúdo da pasta "dist/"
+
+2. Faça upload para: swapsoft.com.br/novidades/
+
+3. Acesse: https://swapsoft.com.br/novidades/
+
+4. Teste redimensionando a janela do navegador
+   (textos mudam automaticamente!)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  🎯 EXEMPLO DE MUDANÇA:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📱 MOBILE (resumido):
+"Automatize 70% das suas operações com Agentes de IA, ERP, CRM 
+e E-commerce desenvolvidos sob medida"
+
+💻 DESKTOP (expandido):
+"Automatize 70% das suas operações com Agentes de IA, ERP Integrado,
+CRM Inteligente e E-commerce Completo desenvolvidos sob medida para
+o SEU negócio. Nossas soluções eliminam gargalos operacionais,
+reduzem custos com processos manuais e aumentam a produtividade da
+sua equipe através de automação inteligente e integração total
+entre sistemas."
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Leia também:
+→ COMO-GERAR-BUILD.md (guia detalhado)
+→ ALTERACOES-TEXTOS-RESPONSIVOS.md (documentação completa)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+

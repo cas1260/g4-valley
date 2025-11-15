@@ -1,0 +1,26 @@
+# Habilitar mod_rewrite
+RewriteEngine On
+
+# Permitir CORS
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type"
+
+# Rotas da API
+RewriteRule ^api/analytics/visitor$ visitor.php [L]
+RewriteRule ^api/analytics/pageview$ pageview.php [L]
+RewriteRule ^api/analytics/event$ event.php [L]
+RewriteRule ^api/analytics/form$ form.php [L]
+RewriteRule ^api/analytics/stats$ stats.php [L]
+RewriteRule ^api/analytics/export$ export.php [L]
+
+# Proteção do banco de dados
+<Files analytics.db>
+    Order allow,deny
+    Deny from all
+</Files>
+
+# PHP settings
+php_flag display_errors Off
+php_flag log_errors On
+

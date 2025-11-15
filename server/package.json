@@ -1,0 +1,22 @@
+{
+  "name": "g4vallues-analytics-server",
+  "version": "1.0.0",
+  "description": "Analytics server with SQLite for G4 Valley website",
+  "main": "analytics.js",
+  "scripts": {
+    "start": "node analytics.js",
+    "dev": "nodemon analytics.js"
+  },
+  "keywords": ["analytics", "sqlite", "tracking"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
+
