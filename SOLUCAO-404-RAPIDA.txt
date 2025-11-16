@@ -1,0 +1,50 @@
+═══════════════════════════════════════════════════════════════
+   🚨 SOLUÇÃO PARA ERRO 404 EM /statics
+═══════════════════════════════════════════════════════════════
+
+PROBLEMA:
+  https://swapsoft.com.br/novidades/statics → 404 Not Found
+
+CAUSA:
+  Falta arquivo .htaccess para React Router funcionar
+
+═══════════════════════════════════════════════════════════════
+
+✅ SOLUÇÃO RÁPIDA:
+
+1. Executar comandos:
+
+cd /Users/soares/Desktop/Projetos/g4vallues
+sudo rm -rf dist novidades
+npm run build
+mkdir novidades
+cp -r dist/* novidades/
+cp -r server novidades/server
+
+2. VERIFICAR SE .htaccess EXISTE:
+
+ls -la novidades/.htaccess
+
+Se NÃO existir, copiar manualmente:
+cp public/.htaccess novidades/.htaccess
+
+3. Fazer upload de novidades/ completo via FTP
+
+4. IMPORTANTE: Ativar "mostrar arquivos ocultos" no FTP
+   para ver o arquivo .htaccess
+
+═══════════════════════════════════════════════════════════════
+
+TESTAR APÓS UPLOAD:
+  ✓ https://swapsoft.com.br/novidades/
+  ✓ https://swapsoft.com.br/novidades/statics
+  ✓ https://swapsoft.com.br/novidades/server/api/analytics/stats
+
+═══════════════════════════════════════════════════════════════
+
+O .htaccess diz ao Apache:
+  "Se a rota não é um arquivo físico, redirecione para index.html"
+  Assim o React Router gerencia as rotas (/statics, etc)
+
+═══════════════════════════════════════════════════════════════
+

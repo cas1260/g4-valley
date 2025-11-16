@@ -31,6 +31,9 @@ interface Stats {
   visitorsThisMonth: number;
   avgTimeOnSite: number;
   conversionRate: number;
+  clickHeatmap: { click_x: number; click_y: number; count: number; page_url: string }[];
+  topClickedElements: { element_tag: string; element_id: string; element_class: string; event_name: string; clicks: number }[];
+  uniqueIPs: { ip_address: string; sessions: number; last_visit: string; device_type: string; browser: string }[];
 }
 
 export function StatisticsPage() {
@@ -363,29 +366,152 @@ export function StatisticsPage() {
           </div>
         </Card>
 
+        {/* IPs Únicos */}
+        <Card className="bg-zinc-900/50 border-zinc-800 p-6 mb-8">
+          <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
+            <Globe className="w-5 h-5 text-amber-500" />
+            Endereços IP Únicos
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-zinc-800">
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Endereço IP</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Sessões</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Dispositivo</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Navegador</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Último Acesso</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.uniqueIPs?.slice(0, 20).map((ip, index) => (
+                  <tr key={index} className="border-b border-zinc-800/50 hover:bg-zinc-800/30">
+                    <td className="text-amber-500 py-3 px-4 font-mono">{ip.ip_address}</td>
+                    <td className="text-white font-bold py-3 px-4">{ip.sessions}</td>
+                    <td className="text-zinc-300 py-3 px-4">{ip.device_type}</td>
+                    <td className="text-zinc-300 py-3 px-4">{ip.browser}</td>
+                    <td className="text-zinc-400 py-3 px-4">
+                      {new Date(ip.last_visit).toLocaleString('pt-BR')}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+
+        {/* Elementos Mais Clicados */}
+        <Card className="bg-zinc-900/50 border-zinc-800 p-6 mb-8">
+          <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
+            <MousePointer className="w-5 h-5 text-amber-500" />
+            Elementos Mais Clicados
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-zinc-800">
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Elemento</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">ID</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Classes</th>
+                  <th className="text-right text-zinc-400 font-medium py-3 px-4">Cliques</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.topClickedElements?.map((element, index) => (
+                  <tr key={index} className="border-b border-zinc-800/50 hover:bg-zinc-800/30">
+                    <td className="text-amber-500 py-3 px-4 font-mono">
+                      &lt;{element.element_tag}&gt;
+                    </td>
+                    <td className="text-zinc-300 py-3 px-4 text-xs">
+                      {element.element_id || '-'}
+                    </td>
+                    <td className="text-zinc-400 py-3 px-4 text-xs max-w-md truncate">
+                      {element.element_class || '-'}
+                    </td>
+                    <td className="text-white font-bold py-3 px-4 text-right">{element.clicks}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+
+        {/* Mapa de Calor de Cliques */}
+        <Card className="bg-zinc-900/50 border-zinc-800 p-6 mb-8">
+          <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
+            <MousePointer className="w-5 h-5 text-red-500" />
+            Mapa de Calor - Posições de Cliques
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-zinc-800">
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Posição X</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Posição Y</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Página</th>
+                  <th className="text-right text-zinc-400 font-medium py-3 px-4">Cliques</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stats.clickHeatmap?.slice(0, 20).map((click, index) => (
+                  <tr key={index} className="border-b border-zinc-800/50 hover:bg-zinc-800/30">
+                    <td className="text-blue-400 py-3 px-4 font-mono">{click.click_x}px</td>
+                    <td className="text-green-400 py-3 px-4 font-mono">{click.click_y}px</td>
+                    <td className="text-zinc-300 py-3 px-4">{click.page_url}</td>
+                    <td className="text-right py-3 px-4">
+                      <span className="bg-red-500/20 text-red-400 px-3 py-1 rounded-full font-bold">
+                        {click.count}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+
         {/* Eventos Recentes */}
         <Card className="bg-zinc-900/50 border-zinc-800 p-6 mb-8">
           <h3 className="text-white font-semibold mb-6 flex items-center gap-2">
             <MousePointer className="w-5 h-5 text-amber-500" />
-            Eventos/Cliques Recentes
+            Eventos/Cliques Recentes (Detalhado)
           </h3>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-zinc-800">
                   <th className="text-left text-zinc-400 font-medium py-3 px-4">Tipo</th>
-                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Nome do Evento</th>
-                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Dados</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Elemento</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Posição (X, Y)</th>
+                  <th className="text-left text-zinc-400 font-medium py-3 px-4">Página</th>
                   <th className="text-left text-zinc-400 font-medium py-3 px-4">Data/Hora</th>
                 </tr>
               </thead>
               <tbody>
-                {stats.recentEvents?.slice(0, 15).map((event, index) => (
+                {stats.recentEvents?.slice(0, 20).map((event, index) => (
                   <tr key={index} className="border-b border-zinc-800/50 hover:bg-zinc-800/30">
                     <td className="text-amber-500 py-3 px-4">{event.event_type}</td>
-                    <td className="text-white py-3 px-4">{event.event_name}</td>
-                    <td className="text-zinc-400 py-3 px-4 text-xs max-w-md truncate">
-                      {typeof event.event_data === 'string' ? event.event_data : JSON.stringify(event.event_data)}
+                    <td className="text-white py-3 px-4">
+                      {event.element_tag && (
+                        <span className="font-mono text-xs">
+                          &lt;{event.element_tag}
+                          {event.element_id && ` id="${event.element_id}"`}&gt;
+                        </span>
+                      )}
+                      {!event.element_tag && '-'}
+                    </td>
+                    <td className="text-zinc-300 py-3 px-4">
+                      {event.click_x && event.click_y ? (
+                        <span className="font-mono text-xs">
+                          <span className="text-blue-400">{event.click_x}</span>,{' '}
+                          <span className="text-green-400">{event.click_y}</span>
+                        </span>
+                      ) : (
+                        '-'
+                      )}
+                    </td>
+                    <td className="text-zinc-400 py-3 px-4 text-xs">
+                      {event.page_url || '-'}
                     </td>
                     <td className="text-zinc-400 py-3 px-4">
                       {new Date(event.timestamp).toLocaleString('pt-BR')}

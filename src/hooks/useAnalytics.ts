@@ -100,13 +100,19 @@ export const useAnalytics = () => {
     pageStartTime.current = Date.now(); // Reset timer
   };
 
-  // Registrar evento
+  // Registrar evento com detalhes de clique
   const trackEvent = async (eventType: string, eventName: string, eventData?: any) => {
     const data = {
       sessionId: sessionId.current,
       eventType,
       eventName,
       eventData: eventData || {},
+      clickX: eventData?.clickX,
+      clickY: eventData?.clickY,
+      elementTag: eventData?.elementTag,
+      elementId: eventData?.id || null,
+      elementClass: eventData?.className || null,
+      pageUrl: eventData?.pageUrl || window.location.pathname,
     };
 
     await sendToAPI('/event', data);
@@ -134,15 +140,24 @@ export const useAnalytics = () => {
     // Registrar primeira page view
     trackPageView();
 
-    // Rastrear cliques em botões
+    // Rastrear cliques em botões com posição X, Y
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      
+      // Capturar posição do clique
+      const clickX = e.clientX;
+      const clickY = e.clientY + window.scrollY; // Incluir scroll
+      
       if (target.tagName === 'BUTTON' || target.tagName === 'A') {
         trackEvent('click', 'button_click', {
           text: target.textContent,
           href: (target as HTMLAnchorElement).href,
           id: target.id,
           className: target.className,
+          clickX,
+          clickY,
+          elementTag: target.tagName,
+          pageUrl: window.location.pathname,
         });
       }
     };

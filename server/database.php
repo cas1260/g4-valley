@@ -60,6 +60,12 @@ class AnalyticsDB {
                 event_type TEXT,
                 event_name TEXT,
                 event_data TEXT,
+                click_x INTEGER,
+                click_y INTEGER,
+                element_tag TEXT,
+                element_id TEXT,
+                element_class TEXT,
+                page_url TEXT,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (session_id) REFERENCES visitors(session_id)
             )
@@ -79,6 +85,9 @@ class AnalyticsDB {
     }
 
     public function saveVisitor($data) {
+        // Capturar IP real (considerando proxies)
+        $ip = $this->getRealIpAddress();
+        
         // Verificar se visitante já existe
         $stmt = $this->db->prepare('SELECT id FROM visitors WHERE session_id = :session_id');
         $stmt->execute([':session_id' => $data['sessionId']]);
@@ -127,10 +136,25 @@ class AnalyticsDB {
             ':language' => $data['language'] ?? null,
             ':timezone' => $data['timezone'] ?? null,
             ':referrer' => $data['referrer'] ?? null,
-            ':ip_address' => $data['ipAddress'] ?? $_SERVER['REMOTE_ADDR'],
+            ':ip_address' => $ip,
             ':country' => $data['country'] ?? null,
             ':city' => $data['city'] ?? null,
         ]);
+    }
+    
+    private function getRealIpAddress() {
+        // Tentar obter IP real considerando proxies
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            // Pode conter múltiplos IPs separados por vírgula
+            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+            return trim($ips[0]);
+        } elseif (!empty($_SERVER['HTTP_X_REAL_IP'])) {
+            return $_SERVER['HTTP_X_REAL_IP'];
+        } else {
+            return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        }
     }
 
     public function savePageView($data) {
@@ -149,8 +173,13 @@ class AnalyticsDB {
 
     public function saveEvent($data) {
         $stmt = $this->db->prepare("
-            INSERT INTO events (session_id, event_type, event_name, event_data)
-            VALUES (:session_id, :event_type, :event_name, :event_data)
+            INSERT INTO events (
+                session_id, event_type, event_name, event_data,
+                click_x, click_y, element_tag, element_id, element_class, page_url
+            ) VALUES (
+                :session_id, :event_type, :event_name, :event_data,
+                :click_x, :click_y, :element_tag, :element_id, :element_class, :page_url
+            )
         ");
         
         return $stmt->execute([
@@ -158,6 +187,12 @@ class AnalyticsDB {
             ':event_type' => $data['eventType'],
             ':event_name' => $data['eventName'],
             ':event_data' => json_encode($data['eventData'] ?? []),
+            ':click_x' => $data['clickX'] ?? null,
+            ':click_y' => $data['clickY'] ?? null,
+            ':element_tag' => $data['elementTag'] ?? null,
+            ':element_id' => $data['elementId'] ?? null,
+            ':element_class' => $data['elementClass'] ?? null,
+            ':page_url' => $data['pageUrl'] ?? null,
         ]);
     }
 
@@ -227,9 +262,52 @@ class AnalyticsDB {
         $stmt = $this->db->query("SELECT * FROM page_views ORDER BY timestamp DESC LIMIT 20");
         $stats['recentPageViews'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Eventos recentes
-        $stmt = $this->db->query("SELECT * FROM events ORDER BY timestamp DESC LIMIT 30");
+        // Eventos recentes com detalhes de clique
+        $stmt = $this->db->query("SELECT * FROM events ORDER BY timestamp DESC LIMIT 50");
         $stats['recentEvents'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Mapa de calor de cliques
+        $stmt = $this->db->query("
+            SELECT click_x, click_y, COUNT(*) as count, page_url
+            FROM events 
+            WHERE click_x IS NOT NULL AND click_y IS NOT NULL
+            GROUP BY click_x, click_y, page_url
+            ORDER BY count DESC
+            LIMIT 100
+        ");
+        $stats['clickHeatmap'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Elementos mais clicados
+        $stmt = $this->db->query("
+            SELECT 
+                element_tag, 
+                element_id, 
+                element_class, 
+                event_name,
+                COUNT(*) as clicks
+            FROM events 
+            WHERE event_type = 'click' AND element_tag IS NOT NULL
+            GROUP BY element_tag, element_id, element_class, event_name
+            ORDER BY clicks DESC
+            LIMIT 20
+        ");
+        $stats['topClickedElements'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // IPs únicos com total de acessos
+        $stmt = $this->db->query("
+            SELECT 
+                ip_address, 
+                COUNT(DISTINCT session_id) as sessions,
+                MAX(last_visit) as last_visit,
+                device_type,
+                browser
+            FROM visitors 
+            WHERE ip_address IS NOT NULL AND ip_address != 'unknown'
+            GROUP BY ip_address
+            ORDER BY sessions DESC, last_visit DESC
+            LIMIT 50
+        ");
+        $stats['uniqueIPs'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Formulários recentes
         $stmt = $this->db->query("SELECT * FROM form_submissions ORDER BY timestamp DESC LIMIT 10");
