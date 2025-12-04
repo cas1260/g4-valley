@@ -27,32 +27,37 @@ server/
 ### Opção 1: XAMPP (Windows/Mac/Linux)
 
 1. **Instalar XAMPP:**
+
    - Download: https://www.apachefriends.org/
 
 2. **Copiar pasta server:**
+
    ```bash
    # Windows
    C:\xampp\htdocs\g4vallues\server\
-   
+
    # Mac/Linux
    /Applications/XAMPP/htdocs/g4vallues/server/
    ```
 
 3. **Iniciar Apache:**
+
    - Abrir XAMPP Control Panel
    - Clicar em "Start" no Apache
 
 4. **Testar:**
    ```
-   http://localhost/g4vallues/server/api/analytics/stats
+   https://swapsoft.com.br/novidades/server/api/analytics/stats
    ```
 
 ### Opção 2: MAMP (Mac)
 
 1. **Instalar MAMP:**
+
    - Download: https://www.mamp.info/
 
 2. **Copiar pasta server:**
+
    ```bash
    /Applications/MAMP/htdocs/g4vallues/server/
    ```
@@ -72,6 +77,7 @@ php -S localhost:8080
 ```
 
 **Testar:**
+
 ```
 http://localhost:8080/api/analytics/stats
 ```
@@ -83,6 +89,7 @@ http://localhost:8080/api/analytics/stats
 ### 1. Upload dos Arquivos
 
 Envie toda a pasta `server/` para:
+
 ```
 /public_html/novidades/server/
 ```
@@ -122,6 +129,7 @@ Se `analytics.db` não existe, será criado automaticamente na primeira requisi�
 ### 4. Verificar .htaccess:
 
 O arquivo `.htaccess` já está configurado com:
+
 - Rewrite rules para rotas limpas
 - CORS headers
 - Proteção do banco de dados
@@ -161,9 +169,11 @@ define('DB_PATH', __DIR__ . '/analytics.db');
 ## 📡 Endpoints da API
 
 ### POST /api/analytics/visitor
+
 Registra ou atualiza visitante
 
 **Request:**
+
 ```json
 {
   "sessionId": "string",
@@ -180,6 +190,7 @@ Registra ou atualiza visitante
 ```
 
 **Response:**
+
 ```json
 {
   "message": "Visitor recorded",
@@ -188,9 +199,11 @@ Registra ou atualiza visitante
 ```
 
 ### POST /api/analytics/pageview
+
 Registra visualização de página
 
 **Request:**
+
 ```json
 {
   "sessionId": "string",
@@ -201,9 +214,11 @@ Registra visualização de página
 ```
 
 ### POST /api/analytics/event
+
 Registra evento/clique
 
 **Request:**
+
 ```json
 {
   "sessionId": "string",
@@ -217,9 +232,11 @@ Registra evento/clique
 ```
 
 ### POST /api/analytics/form
+
 Registra formulário
 
 **Request:**
+
 ```json
 {
   "sessionId": "string",
@@ -232,15 +249,18 @@ Registra formulário
 ```
 
 ### GET /api/analytics/stats
+
 Retorna estatísticas
 
 **Query Params:**
+
 - `filter=all` (padrão)
 - `filter=today`
 - `filter=week`
 - `filter=month`
 
 **Response:**
+
 ```json
 {
   "totalVisitors": 150,
@@ -262,9 +282,11 @@ Retorna estatísticas
 ```
 
 ### GET /api/analytics/export
+
 Exporta todos os dados
 
 **Response:**
+
 ```json
 {
   "visitors": [...],
@@ -312,6 +334,7 @@ echo "Total de visitantes: " . $row['total'];
 ## ⚙️ Requisitos do Servidor
 
 ### Mínimo Necessário:
+
 - ✅ PHP 7.4+ (recomendado 8.0+)
 - ✅ Extensão PDO (habilitada por padrão)
 - ✅ Extensão PDO_SQLITE (habilitada por padrão)
@@ -390,11 +413,13 @@ Os arquivos frontend já foram atualizados:
 ### URLs Utilizadas:
 
 **Desenvolvimento:**
+
 ```
-http://localhost/g4vallues/server/api/analytics/
+https://swapsoft.com.br/novidades/server/api/analytics/
 ```
 
 **Produção:**
+
 ```
 https://swapsoft.com.br/novidades/server/api/analytics/
 ```
@@ -404,6 +429,7 @@ https://swapsoft.com.br/novidades/server/api/analytics/
 ## 🔒 Segurança
 
 ### ✅ Implementado:
+
 - CORS configurado
 - Banco protegido via .htaccess
 - Prepared statements (SQL injection)
@@ -411,6 +437,7 @@ https://swapsoft.com.br/novidades/server/api/analytics/
 - Error handling adequado
 
 ### ⚠️ Recomendações:
+
 - [ ] Adicionar rate limiting
 - [ ] Adicionar autenticação no dashboard
 - [ ] Usar HTTPS em produção
@@ -422,11 +449,13 @@ https://swapsoft.com.br/novidades/server/api/analytics/
 ## 💾 Backup do Banco
 
 ### Manual:
+
 ```bash
 cp analytics.db analytics_backup_$(date +%Y%m%d).db
 ```
 
 ### Automático (cron):
+
 ```bash
 # Editar crontab
 crontab -e
@@ -476,4 +505,3 @@ if (copy($source, $dest)) {
 Não precisa mais de Node.js no servidor. Apenas PHP 7.4+ com SQLite.
 
 **Próximo passo:** Fazer upload para `swapsoft.com.br/novidades/server/` 🚀
-

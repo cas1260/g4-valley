@@ -16,11 +16,13 @@ class AnalyticsDB {
     }
 
     private function createTables() {
-        // Tabela de visitantes
+        // ====================================================================
+        // TABELA DE VISITANTES
+        // ====================================================================
         $this->db->exec("
             CREATE TABLE IF NOT EXISTS visitors (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                session_id TEXT UNIQUE,
+                session_id TEXT UNIQUE NOT NULL,
                 first_visit DATETIME DEFAULT CURRENT_TIMESTAMP,
                 last_visit DATETIME DEFAULT CURRENT_TIMESTAMP,
                 total_visits INTEGER DEFAULT 1,
@@ -39,26 +41,30 @@ class AnalyticsDB {
             )
         ");
 
-        // Tabela de page views
+        // ====================================================================
+        // TABELA DE PAGE VIEWS
+        // ====================================================================
         $this->db->exec("
             CREATE TABLE IF NOT EXISTS page_views (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                session_id TEXT,
-                page_url TEXT,
+                session_id TEXT NOT NULL,
+                page_url TEXT NOT NULL,
                 page_title TEXT,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-                time_spent INTEGER,
+                time_spent INTEGER DEFAULT 0,
                 FOREIGN KEY (session_id) REFERENCES visitors(session_id)
             )
         ");
 
-        // Tabela de eventos
+        // ====================================================================
+        // TABELA DE EVENTOS
+        // ====================================================================
         $this->db->exec("
             CREATE TABLE IF NOT EXISTS events (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                session_id TEXT,
-                event_type TEXT,
-                event_name TEXT,
+                session_id TEXT NOT NULL,
+                event_type TEXT NOT NULL,
+                event_name TEXT NOT NULL,
                 event_data TEXT,
                 click_x INTEGER,
                 click_y INTEGER,
@@ -71,104 +77,103 @@ class AnalyticsDB {
             )
         ");
 
-        // Tabela de formulários
+        // ====================================================================
+        // TABELA DE FORMULÁRIOS
+        // ====================================================================
         $this->db->exec("
             CREATE TABLE IF NOT EXISTS form_submissions (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                session_id TEXT,
-                form_name TEXT,
+                session_id TEXT NOT NULL,
+                form_name TEXT NOT NULL,
                 form_data TEXT,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (session_id) REFERENCES visitors(session_id)
             )
         ");
+
+        // ====================================================================
+        // TABELA DE CONTATOS (Formulário de Agendamento)
+        // ====================================================================
+        $this->db->exec("
+            CREATE TABLE IF NOT EXISTS contacts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                email TEXT NOT NULL,
+                phone TEXT NOT NULL,
+                company TEXT,
+                service TEXT NOT NULL,
+                message TEXT,
+                ip_address TEXT,
+                user_agent TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                email_sent INTEGER DEFAULT 0,
+                email_sent_at DATETIME
+            )
+        ");
+
+        // ====================================================================
+        // ÍNDICES PARA PERFORMANCE
+        // ====================================================================
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_visitors_session ON visitors(session_id)");
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_pageviews_session ON page_views(session_id)");
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_pageviews_timestamp ON page_views(timestamp)");
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_events_session ON events(session_id)");
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_events_type ON events(event_type)");
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_events_timestamp ON events(timestamp)");
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_forms_session ON form_submissions(session_id)");
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_contacts_email ON contacts(email)");
+        $this->db->exec("CREATE INDEX IF NOT EXISTS idx_contacts_created ON contacts(created_at)");
     }
+
+    // ========================================================================
+    // MÉTODOS PARA SALVAR DADOS
+    // ========================================================================
 
     public function saveVisitor($data) {
-        // Capturar IP real (considerando proxies)
-        $ip = $this->getRealIpAddress();
-        
-        // Verificar se visitante já existe
-        $stmt = $this->db->prepare('SELECT id FROM visitors WHERE session_id = :session_id');
-        $stmt->execute([':session_id' => $data['sessionId']]);
-        $existing = $stmt->fetch();
-
-        if ($existing) {
-            // Atualizar visitante existente
-            $sql = "UPDATE visitors SET 
-                last_visit = CURRENT_TIMESTAMP,
-                total_visits = total_visits + 1,
-                user_agent = :user_agent,
-                browser = :browser,
-                os = :os,
-                device_type = :device_type,
-                screen_width = :screen_width,
-                screen_height = :screen_height,
-                language = :language,
-                timezone = :timezone,
-                referrer = :referrer,
-                ip_address = :ip_address,
-                country = :country,
-                city = :city
-                WHERE session_id = :session_id";
-        } else {
-            // Inserir novo visitante
-            $sql = "INSERT INTO visitors (
+        $stmt = $this->db->prepare("
+            INSERT OR REPLACE INTO visitors (
                 session_id, user_agent, browser, os, device_type,
-                screen_width, screen_height, language, timezone,
-                referrer, ip_address, country, city
+                screen_width, screen_height, language, timezone, referrer, ip_address
             ) VALUES (
                 :session_id, :user_agent, :browser, :os, :device_type,
-                :screen_width, :screen_height, :language, :timezone,
-                :referrer, :ip_address, :country, :city
-            )";
-        }
+                :screen_width, :screen_height, :language, :timezone, :referrer, :ip_address
+            )
+        ");
 
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
-            ':session_id' => $data['sessionId'],
-            ':user_agent' => $data['userAgent'] ?? null,
-            ':browser' => $data['browser'] ?? null,
-            ':os' => $data['os'] ?? null,
-            ':device_type' => $data['deviceType'] ?? null,
-            ':screen_width' => $data['screenWidth'] ?? null,
-            ':screen_height' => $data['screenHeight'] ?? null,
-            ':language' => $data['language'] ?? null,
-            ':timezone' => $data['timezone'] ?? null,
-            ':referrer' => $data['referrer'] ?? null,
-            ':ip_address' => $ip,
-            ':country' => $data['country'] ?? null,
-            ':city' => $data['city'] ?? null,
+        $stmt->execute([
+            ':session_id' => $data['sessionId'] ?? '',
+            ':user_agent' => $data['userAgent'] ?? '',
+            ':browser' => $data['browser'] ?? '',
+            ':os' => $data['os'] ?? '',
+            ':device_type' => $data['deviceType'] ?? '',
+            ':screen_width' => $data['screenWidth'] ?? 0,
+            ':screen_height' => $data['screenHeight'] ?? 0,
+            ':language' => $data['language'] ?? '',
+            ':timezone' => $data['timezone'] ?? '',
+            ':referrer' => $data['referrer'] ?? '',
+            ':ip_address' => $this->getRealIpAddress()
         ]);
-    }
-    
-    private function getRealIpAddress() {
-        // Tentar obter IP real considerando proxies
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            // Pode conter múltiplos IPs separados por vírgula
-            $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
-            return trim($ips[0]);
-        } elseif (!empty($_SERVER['HTTP_X_REAL_IP'])) {
-            return $_SERVER['HTTP_X_REAL_IP'];
-        } else {
-            return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-        }
+
+        return $this->db->lastInsertId();
     }
 
     public function savePageView($data) {
         $stmt = $this->db->prepare("
-            INSERT INTO page_views (session_id, page_url, page_title, time_spent)
-            VALUES (:session_id, :page_url, :page_title, :time_spent)
+            INSERT INTO page_views (
+                session_id, page_url, page_title, time_spent
+            ) VALUES (
+                :session_id, :page_url, :page_title, :time_spent
+            )
         ");
-        
-        return $stmt->execute([
-            ':session_id' => $data['sessionId'],
-            ':page_url' => $data['pageUrl'],
-            ':page_title' => $data['pageTitle'],
-            ':time_spent' => $data['timeSpent'] ?? 0,
+
+        $stmt->execute([
+            ':session_id' => $data['sessionId'] ?? '',
+            ':page_url' => $data['pageUrl'] ?? '',
+            ':page_title' => $data['pageTitle'] ?? '',
+            ':time_spent' => $data['timeSpent'] ?? 0
         ]);
+
+        return $this->db->lastInsertId();
     }
 
     public function saveEvent($data) {
@@ -181,171 +186,313 @@ class AnalyticsDB {
                 :click_x, :click_y, :element_tag, :element_id, :element_class, :page_url
             )
         ");
-        
-        return $stmt->execute([
-            ':session_id' => $data['sessionId'],
-            ':event_type' => $data['eventType'],
-            ':event_name' => $data['eventName'],
+
+        $stmt->execute([
+            ':session_id' => $data['sessionId'] ?? '',
+            ':event_type' => $data['eventType'] ?? '',
+            ':event_name' => $data['eventName'] ?? '',
             ':event_data' => json_encode($data['eventData'] ?? []),
             ':click_x' => $data['clickX'] ?? null,
             ':click_y' => $data['clickY'] ?? null,
             ':element_tag' => $data['elementTag'] ?? null,
             ':element_id' => $data['elementId'] ?? null,
             ':element_class' => $data['elementClass'] ?? null,
-            ':page_url' => $data['pageUrl'] ?? null,
+            ':page_url' => $data['pageUrl'] ?? ''
         ]);
+
+        return $this->db->lastInsertId();
     }
 
     public function saveFormSubmission($data) {
         $stmt = $this->db->prepare("
-            INSERT INTO form_submissions (session_id, form_name, form_data)
-            VALUES (:session_id, :form_name, :form_data)
+            INSERT INTO form_submissions (
+                session_id, form_name, form_data
+            ) VALUES (
+                :session_id, :form_name, :form_data
+            )
         ");
-        
-        return $stmt->execute([
-            ':session_id' => $data['sessionId'],
-            ':form_name' => $data['formName'],
-            ':form_data' => json_encode($data['formData']),
+
+        $stmt->execute([
+            ':session_id' => $data['sessionId'] ?? '',
+            ':form_name' => $data['formName'] ?? '',
+            ':form_data' => json_encode($data['formData'] ?? [])
         ]);
+
+        return $this->db->lastInsertId();
     }
 
-    public function getStats($filter = 'all') {
-        $dateFilter = '';
+    public function saveContact($data) {
+        $stmt = $this->db->prepare("
+            INSERT INTO contacts (
+                name, email, phone, company, service, message, ip_address, user_agent
+            ) VALUES (
+                :name, :email, :phone, :company, :service, :message, :ip_address, :user_agent
+            )
+        ");
+
+        $stmt->execute([
+            ':name' => $data['name'] ?? '',
+            ':email' => $data['email'] ?? '',
+            ':phone' => $data['phone'] ?? '',
+            ':company' => $data['company'] ?? '',
+            ':service' => $data['service'] ?? '',
+            ':message' => $data['message'] ?? '',
+            ':ip_address' => $this->getRealIpAddress(),
+            ':user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? ''
+        ]);
+
+        return $this->db->lastInsertId();
+    }
+
+    public function markEmailSent($contactId) {
+        $stmt = $this->db->prepare("
+            UPDATE contacts 
+            SET email_sent = 1, email_sent_at = CURRENT_TIMESTAMP 
+            WHERE id = :id
+        ");
         
+        $stmt->execute([':id' => $contactId]);
+    }
+
+    // ========================================================================
+    // MÉTODOS PARA OBTER ESTATÍSTICAS
+    // ========================================================================
+
+    public function getStats($filter = 'all') {
+        $whereClause = $this->getFilterWhereClause($filter);
+        $visitorStats = $this->getVisitorStats($whereClause);
+
+        return [
+            // Campos diretos para o React
+            'totalVisitors' => $visitorStats['total'],
+            'visitorsToday' => $visitorStats['today'],
+            'visitorsThisWeek' => $visitorStats['week'],
+            'visitorsThisMonth' => $visitorStats['month'],
+            'totalPageViews' => $this->getPageViewStats($whereClause),
+            'totalEvents' => $this->getEventStats($whereClause),
+            'totalForms' => $this->getFormStats($whereClause),
+            'deviceTypes' => $this->getDeviceStats($whereClause),
+            'browsers' => $this->getBrowserStats($whereClause),
+            'topPages' => $this->getTopPages($whereClause),
+            'clickHeatmap' => $this->getClickHeatmap($whereClause),
+            'avgTimeOnSite' => $this->getAvgTimeOnSite($whereClause),
+            'conversionRate' => $this->getConversionRate(),
+            'recentVisitors' => $this->getRecentVisitors(),
+            'recentPageViews' => $this->getRecentPageViews(),
+            'recentEvents' => $this->getRecentEvents(),
+            'recentForms' => $this->getRecentForms(),
+            'topClickedElements' => $this->getTopClickedElements($whereClause),
+            'uniqueIPs' => $this->getUniqueIPs(),
+            
+            // Manter estrutura antiga para compatibilidade
+            'visitors' => $visitorStats,
+            'pageViews' => $this->getPageViewStats($whereClause),
+            'events' => $this->getEventStats($whereClause),
+            'forms' => $this->getFormStats($whereClause),
+            'devices' => $this->getDeviceStats($whereClause)
+        ];
+    }
+
+    private function getFilterWhereClause($filter) {
         switch ($filter) {
             case 'today':
-                $dateFilter = "AND DATE(first_visit) = DATE('now')";
-                break;
+                return "DATE(timestamp) = DATE('now')";
             case 'week':
-                $dateFilter = "AND first_visit >= DATE('now', '-7 days')";
-                break;
+                return "DATE(timestamp) >= DATE('now', '-7 days')";
             case 'month':
-                $dateFilter = "AND first_visit >= DATE('now', '-30 days')";
-                break;
+                return "DATE(timestamp) >= DATE('now', '-30 days')";
+            default:
+                return "1=1";
         }
+    }
 
-        $stats = [];
+    private function getVisitorStats($whereClause) {
+        $stmt = $this->db->query("SELECT COUNT(DISTINCT session_id) as total FROM visitors");
+        $total = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-        // Total de visitantes
-        $stmt = $this->db->query("SELECT COUNT(DISTINCT session_id) as total FROM visitors WHERE 1=1 $dateFilter");
-        $stats['totalVisitors'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-        // Total de page views
-        $stmt = $this->db->query("SELECT COUNT(*) as total FROM page_views");
-        $stats['totalPageViews'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-        // Total de eventos
-        $stmt = $this->db->query("SELECT COUNT(*) as total FROM events");
-        $stats['totalEvents'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-        // Total de formulários
-        $stmt = $this->db->query("SELECT COUNT(*) as total FROM form_submissions");
-        $stats['totalForms'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-        // Visitantes por dispositivo
-        $stmt = $this->db->query("SELECT device_type, COUNT(*) as count FROM visitors WHERE 1=1 $dateFilter GROUP BY device_type");
-        $stats['deviceTypes'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Páginas mais visitadas
-        $stmt = $this->db->query("SELECT page_url, COUNT(*) as count FROM page_views GROUP BY page_url ORDER BY count DESC LIMIT 10");
-        $stats['topPages'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Navegadores mais usados
-        $stmt = $this->db->query("SELECT browser, COUNT(*) as count FROM visitors WHERE 1=1 $dateFilter GROUP BY browser ORDER BY count DESC");
-        $stats['browsers'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Visitantes recentes
-        $stmt = $this->db->query("SELECT * FROM visitors ORDER BY first_visit DESC LIMIT 20");
-        $stats['recentVisitors'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Page views recentes
-        $stmt = $this->db->query("SELECT * FROM page_views ORDER BY timestamp DESC LIMIT 20");
-        $stats['recentPageViews'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Eventos recentes com detalhes de clique
-        $stmt = $this->db->query("SELECT * FROM events ORDER BY timestamp DESC LIMIT 50");
-        $stats['recentEvents'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // Mapa de calor de cliques
         $stmt = $this->db->query("
-            SELECT click_x, click_y, COUNT(*) as count, page_url
+            SELECT COUNT(DISTINCT session_id) as today 
+            FROM visitors 
+            WHERE DATE(first_visit) = DATE('now')
+        ");
+        $today = $stmt->fetch(PDO::FETCH_ASSOC)['today'];
+
+        $stmt = $this->db->query("
+            SELECT COUNT(DISTINCT session_id) as week 
+            FROM visitors 
+            WHERE DATE(first_visit) >= DATE('now', '-7 days')
+        ");
+        $week = $stmt->fetch(PDO::FETCH_ASSOC)['week'];
+
+        $stmt = $this->db->query("
+            SELECT COUNT(DISTINCT session_id) as month 
+            FROM visitors 
+            WHERE DATE(first_visit) >= DATE('now', '-30 days')
+        ");
+        $month = $stmt->fetch(PDO::FETCH_ASSOC)['month'];
+
+        return [
+            'total' => $total,
+            'today' => $today,
+            'week' => $week,
+            'month' => $month
+        ];
+    }
+
+    private function getPageViewStats($whereClause) {
+        $stmt = $this->db->query("SELECT COUNT(*) as total FROM page_views WHERE $whereClause");
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    private function getEventStats($whereClause) {
+        $stmt = $this->db->query("SELECT COUNT(*) as total FROM events WHERE $whereClause");
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    private function getFormStats($whereClause) {
+        $stmt = $this->db->query("SELECT COUNT(*) as total FROM form_submissions WHERE $whereClause");
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    private function getDeviceStats($whereClause) {
+        $stmt = $this->db->query("
+            SELECT device_type, COUNT(*) as count 
+            FROM visitors 
+            GROUP BY device_type
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getBrowserStats($whereClause) {
+        $stmt = $this->db->query("
+            SELECT browser, COUNT(*) as count 
+            FROM visitors 
+            GROUP BY browser
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getTopPages($whereClause) {
+        $stmt = $this->db->query("
+            SELECT page_url, COUNT(*) as views 
+            FROM page_views 
+            WHERE $whereClause
+            GROUP BY page_url 
+            ORDER BY views DESC 
+            LIMIT 10
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getClickHeatmap($whereClause) {
+        $stmt = $this->db->query("
+            SELECT click_x, click_y, page_url, COUNT(*) as count 
             FROM events 
-            WHERE click_x IS NOT NULL AND click_y IS NOT NULL
+            WHERE $whereClause AND click_x IS NOT NULL AND click_y IS NOT NULL
             GROUP BY click_x, click_y, page_url
             ORDER BY count DESC
             LIMIT 100
         ");
-        $stats['clickHeatmap'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // Elementos mais clicados
-        $stmt = $this->db->query("
-            SELECT 
-                element_tag, 
-                element_id, 
-                element_class, 
-                event_name,
-                COUNT(*) as clicks
-            FROM events 
-            WHERE event_type = 'click' AND element_tag IS NOT NULL
-            GROUP BY element_tag, element_id, element_class, event_name
-            ORDER BY clicks DESC
-            LIMIT 20
-        ");
-        $stats['topClickedElements'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        // IPs únicos com total de acessos
-        $stmt = $this->db->query("
-            SELECT 
-                ip_address, 
-                COUNT(DISTINCT session_id) as sessions,
-                MAX(last_visit) as last_visit,
-                device_type,
-                browser
-            FROM visitors 
-            WHERE ip_address IS NOT NULL AND ip_address != 'unknown'
-            GROUP BY ip_address
-            ORDER BY sessions DESC, last_visit DESC
-            LIMIT 50
-        ");
-        $stats['uniqueIPs'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Formulários recentes
-        $stmt = $this->db->query("SELECT * FROM form_submissions ORDER BY timestamp DESC LIMIT 10");
-        $stats['recentForms'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Visitantes hoje
-        $stmt = $this->db->query("SELECT COUNT(DISTINCT session_id) as total FROM visitors WHERE DATE(first_visit) = DATE('now')");
-        $stats['visitorsToday'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-        // Visitantes esta semana
-        $stmt = $this->db->query("SELECT COUNT(DISTINCT session_id) as total FROM visitors WHERE first_visit >= DATE('now', '-7 days')");
-        $stats['visitorsThisWeek'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-        // Visitantes este mês
-        $stmt = $this->db->query("SELECT COUNT(DISTINCT session_id) as total FROM visitors WHERE first_visit >= DATE('now', '-30 days')");
-        $stats['visitorsThisMonth'] = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-        // Tempo médio no site
-        $stmt = $this->db->query("SELECT AVG(time_spent) as avg FROM page_views WHERE time_spent > 0");
-        $stats['avgTimeOnSite'] = round($stmt->fetch(PDO::FETCH_ASSOC)['avg'] ?? 0);
-
-        // Taxa de conversão
-        $stats['conversionRate'] = $stats['totalVisitors'] > 0 
-            ? ($stats['totalForms'] / $stats['totalVisitors']) * 100 
-            : 0;
-
-        return $stats;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function exportAllData() {
-        $data = [];
+    private function getAvgTimeOnSite($whereClause) {
+        $stmt = $this->db->query("
+            SELECT AVG(time_spent) as avg_time 
+            FROM page_views 
+            WHERE $whereClause AND time_spent > 0
+        ");
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return round($result['avg_time'] ?? 0);
+    }
 
-        $data['visitors'] = $this->db->query("SELECT * FROM visitors")->fetchAll(PDO::FETCH_ASSOC);
-        $data['pageViews'] = $this->db->query("SELECT * FROM page_views")->fetchAll(PDO::FETCH_ASSOC);
-        $data['events'] = $this->db->query("SELECT * FROM events")->fetchAll(PDO::FETCH_ASSOC);
-        $data['formSubmissions'] = $this->db->query("SELECT * FROM form_submissions")->fetchAll(PDO::FETCH_ASSOC);
+    private function getConversionRate() {
+        $totalVisitors = $this->db->query("SELECT COUNT(DISTINCT session_id) as total FROM visitors")->fetch(PDO::FETCH_ASSOC)['total'];
+        $totalForms = $this->db->query("SELECT COUNT(*) as total FROM form_submissions")->fetch(PDO::FETCH_ASSOC)['total'];
+        
+        if ($totalVisitors == 0) return 0;
+        return round(($totalForms / $totalVisitors) * 100, 2);
+    }
 
-        return $data;
+    private function getRecentVisitors() {
+        $stmt = $this->db->query("
+            SELECT session_id, device_type, browser, os, first_visit, total_visits, ip_address
+            FROM visitors 
+            ORDER BY last_visit DESC 
+            LIMIT 10
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getRecentPageViews() {
+        $stmt = $this->db->query("
+            SELECT page_url, page_title, timestamp, time_spent
+            FROM page_views 
+            ORDER BY timestamp DESC 
+            LIMIT 10
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getRecentEvents() {
+        $stmt = $this->db->query("
+            SELECT event_type, event_name, event_data, timestamp, page_url, element_tag
+            FROM events 
+            ORDER BY timestamp DESC 
+            LIMIT 10
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getRecentForms() {
+        $stmt = $this->db->query("
+            SELECT form_name, form_data, timestamp
+            FROM form_submissions 
+            ORDER BY timestamp DESC 
+            LIMIT 10
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getTopClickedElements($whereClause) {
+        $stmt = $this->db->query("
+            SELECT element_tag, element_id, element_class, event_name, COUNT(*) as clicks
+            FROM events 
+            WHERE $whereClause AND element_tag IS NOT NULL
+            GROUP BY element_tag, element_id, element_class, event_name
+            ORDER BY clicks DESC 
+            LIMIT 10
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    private function getUniqueIPs() {
+        $stmt = $this->db->query("
+            SELECT ip_address, COUNT(DISTINCT session_id) as sessions, MAX(last_visit) as last_visit, device_type, browser
+            FROM visitors 
+            WHERE ip_address IS NOT NULL
+            GROUP BY ip_address
+            ORDER BY sessions DESC 
+            LIMIT 10
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // ========================================================================
+    // MÉTODOS AUXILIARES
+    // ========================================================================
+
+    public function getRealIpAddress() {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            return $_SERVER['REMOTE_ADDR'] ?? null;
+        }
+    }
+
+    public function getDB() {
+        return $this->db;
     }
 }
-

@@ -37,11 +37,11 @@ const detectDeviceType = (userAgent: string): string => {
   return 'Desktop';
 };
 
-// URL da API (altere para seu servidor em produção)
+// URL da API
 const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 const API_URL = isDevelopment
-  ? 'http://localhost/g4vallues/server/api/analytics'
-  : 'https://swapsoft.com.br/novidades/server/api/analytics';
+  ? 'http://localhost:8080/server/api/analytics'
+  : '/novidades/server/api/analytics';
 
 export const useAnalytics = () => {
   const sessionId = useRef<string>(generateSessionId());

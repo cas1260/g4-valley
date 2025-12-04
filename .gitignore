@@ -71,6 +71,9 @@ backups/
 server/vendor/
 composer.lock
 
+# Configurações SMTP (CREDENCIAIS SENSÍVEIS)
+server/smtp-config.php
+
 # Outros
 *.pid
 *.seed

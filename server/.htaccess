@@ -13,6 +13,7 @@ RewriteRule ^api/analytics/event$ event.php [L]
 RewriteRule ^api/analytics/form$ form.php [L]
 RewriteRule ^api/analytics/stats$ stats.php [L]
 RewriteRule ^api/analytics/export$ export.php [L]
+RewriteRule ^api/contact$ contact.php [L]
 
 # Proteção do banco de dados
 <Files analytics.db>

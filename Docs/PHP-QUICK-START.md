@@ -5,10 +5,12 @@
 ### 1️⃣ Instalar Servidor PHP Local
 
 **XAMPP (Recomendado - Windows/Mac/Linux):**
+
 - Download: https://www.apachefriends.org/
 - Instalar e iniciar Apache
 
 **MAMP (Mac):**
+
 - Download: https://www.mamp.info/
 - Instalar e iniciar servidores
 
@@ -30,7 +32,7 @@ Copiar pasta "server" para: C:\xampp\htdocs\g4vallues\
 Abra no navegador:
 
 ```
-http://localhost/g4vallues/server/api/analytics/stats
+https://swapsoft.com.br/novidades/server/api/analytics/stats
 ```
 
 Se retornar JSON, está funcionando! ✅
@@ -66,6 +68,7 @@ https://swapsoft.com.br/novidades/server/api/analytics/stats
 ## ✅ Frontend Já Configurado
 
 O frontend React detecta automaticamente:
+
 - **localhost** → usa `http://localhost/g4vallues/server/`
 - **produção** → usa `https://swapsoft.com.br/novidades/server/`
 
@@ -79,7 +82,7 @@ server/
 ├── database.php        ← SQLite
 ├── visitor.php         ← API
 ├── pageview.php        ← API
-├── event.php           ← API  
+├── event.php           ← API
 ├── form.php            ← API
 ├── stats.php           ← API
 ├── export.php          ← API
@@ -99,4 +102,3 @@ npm run build
 Upload da pasta `dist/` para `/novidades/`
 
 **Sistema 100% em PHP!** 🐘✅
-

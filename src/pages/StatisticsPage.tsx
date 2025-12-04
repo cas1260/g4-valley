@@ -1,15 +1,15 @@
 import {
-    Calendar,
-    Clock,
-    Download,
-    Eye,
-    FileText,
-    Globe,
-    Monitor,
-    MousePointer,
-    Smartphone, Tablet,
-    TrendingUp,
-    Users
+  Calendar,
+  Clock,
+  Download,
+  Eye,
+  FileText,
+  Globe,
+  Monitor,
+  MousePointer,
+  Smartphone, Tablet,
+  TrendingUp,
+  Users
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Card } from '../components/ui/card';
@@ -49,7 +49,7 @@ export function StatisticsPage() {
     try {
       const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const apiUrl = isDevelopment
-        ? 'http://localhost/g4vallues/server/api/analytics/stats'
+        ? 'https://swapsoft.com.br/novidades/server/api/analytics/stats'
         : 'https://swapsoft.com.br/novidades/server/api/analytics/stats';
       
       const response = await fetch(`${apiUrl}?filter=${dateFilter}`);
@@ -66,7 +66,7 @@ export function StatisticsPage() {
     try {
       const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const apiUrl = isDevelopment
-        ? 'http://localhost/g4vallues/server/api/analytics/export'
+        ? 'https://swapsoft.com.br/novidades/server/api/analytics/export'
         : 'https://swapsoft.com.br/novidades/server/api/analytics/export';
       
       const response = await fetch(apiUrl);

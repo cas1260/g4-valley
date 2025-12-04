@@ -31,7 +31,7 @@ export function ProblemsSection() {
   ];
 
   return (
-    <section className="relative bg-zinc-900/30" id="solucoes">
+    <section className="relative py-12 md:py-20 bg-zinc-900/30" id="solucoes">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="text-center mb-16">
           <h2 className="text-white mb-4" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>

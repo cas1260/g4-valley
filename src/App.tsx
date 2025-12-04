@@ -1,10 +1,12 @@
 import { Header } from "./components/Header";
 import { HeroSection } from "./components/HeroSection";
 import { ServicesSection } from "./components/ServicesSection";
+import { FeaturesSection } from "./components/FeaturesSection";
 import { ProblemsSection } from "./components/ProblemsSection";
 import { CredibilitySection } from "./components/CredibilitySection";
 import { CTASection } from "./components/CTASection";
 import { Footer } from "./components/Footer";
+import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
 import { Toaster } from "./components/ui/sonner";
 import fundoSvg from "./assets/fundo.svg?url";
 import { useAnalytics } from "./hooks/useAnalytics";
@@ -36,11 +38,15 @@ export default function App() {
         <HeroSection />
         <ProblemsSection />
         <ServicesSection />
+        <FeaturesSection />
         <CredibilitySection />
         <CTASection />
         <Footer />
         <Toaster />
       </div>
+      
+      {/* Botão WhatsApp Flutuante - Fora da div z-10 para ficar sempre no topo */}
+      <FloatingWhatsApp />
     </div>
   );
 }

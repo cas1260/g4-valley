@@ -58,7 +58,7 @@ export function CredibilitySection() {
   };
 
   return (
-    <section className="relative pb-20 bg-zinc-900/30" id="experiencia">
+    <section className="relative py-12 md:py-20 bg-zinc-900/30" id="experiencia">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="text-center mb-16">
@@ -68,10 +68,19 @@ export function CredibilitySection() {
               20 Anos de Experiência
             </span>
           </h2>
-          <p className="text-zinc-400 text-lg max-w-3xl mx-auto" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>
+          <p className="text-zinc-400 text-lg max-w-3xl mx-auto mb-6" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>
             Desenvolvedor Sênior e Tech Lead com expertise comprovada em soluções corporativas, 
             e-commerce, ERP, CRM e tecnologias de ponta
           </p>
+          <div className="bg-gradient-to-r from-amber-500/10 to-orange-600/10 border border-amber-500/30 rounded-2xl p-6 md:p-8 max-w-4xl mx-auto">
+            <p className="text-zinc-300 text-base md:text-lg leading-relaxed text-justify" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>
+              {isMobile ? (
+                "Nossa missão é capacitar empresas a otimizar suas operações através de tecnologias avançadas e ferramentas intuitivas. Desenvolvemos soluções flexíveis, escaláveis e adaptáveis às necessidades específicas de cada negócio."
+              ) : (
+                "Nossa missão é capacitar empresas a otimizar suas operações através de tecnologias avançadas e ferramentas intuitivas. Acreditamos que cada negócio é único e merece soluções personalizadas que realmente façam a diferença no dia a dia. Por isso, desenvolvemos sistemas flexíveis, escaláveis e totalmente adaptáveis às necessidades específicas de cada cliente, garantindo que a tecnologia seja uma aliada estratégica no crescimento e sucesso do seu negócio."
+              )}
+            </p>
+          </div>
         </div>
 
         {/* Main Highlights */}

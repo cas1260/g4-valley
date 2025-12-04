@@ -20,28 +20,53 @@ export function CTASection() {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Registrar submissão do formulário (silencioso)
     trackFormSubmission("contact_form", formData);
     
-    // Aqui você integraria com seu sistema de CRM/email
-    console.log("Form data:", formData);
-    
-    toast.success("Mensagem enviada com sucesso!", {
-      description: "Entrarei em contato em breve para agendar nossa conversa no G4 Valley."
-    });
-
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      company: "",
-      service: "",
-      message: ""
-    });
+    try {
+      // Determinar URL da API baseado no ambiente
+      const apiUrl = import.meta.env.DEV 
+        ? 'http://localhost:8080/server/api/contact'
+        : '/novidades/server/api/contact';
+      
+      // Enviar dados para o backend
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+        toast.success("Mensagem enviada com sucesso!", {
+          description: "Entrarei em contato em breve para agendar nossa conversa no G4 Valley."
+        });
+        
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          company: "",
+          service: "",
+          message: ""
+        });
+      } else {
+        throw new Error(result.error || 'Erro ao enviar mensagem');
+      }
+      
+    } catch (error) {
+      console.error('Erro ao enviar formulário:', error);
+      toast.error("Erro ao enviar mensagem", {
+        description: "Por favor, tente novamente ou entre em contato diretamente pelo WhatsApp."
+      });
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -49,7 +74,7 @@ export function CTASection() {
   };
 
   return (
-    <section className="relative" id="contato">
+    <section className="relative py-12 md:py-20" id="contato">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="text-center mb-12">
@@ -78,7 +103,7 @@ export function CTASection() {
                     placeholder="Seu nome"
                     value={formData.name}
                     onChange={(e) => handleChange("name", e.target.value)}
-                    className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500"
+                    className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 h-12"
                     required
                   />
                 </div>
@@ -91,7 +116,7 @@ export function CTASection() {
                     placeholder="seu@email.com"
                     value={formData.email}
                     onChange={(e) => handleChange("email", e.target.value)}
-                    className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500"
+                    className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 h-12"
                     required
                   />
                 </div>
@@ -104,7 +129,7 @@ export function CTASection() {
                     placeholder="(00) 00000-0000"
                     value={formData.phone}
                     onChange={(e) => handleChange("phone", e.target.value)}
-                    className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500"
+                    className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 h-12"
                     required
                   />
                 </div>
@@ -117,7 +142,7 @@ export function CTASection() {
                     placeholder="Nome da sua empresa"
                     value={formData.company}
                     onChange={(e) => handleChange("company", e.target.value)}
-                    className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500"
+                    className="bg-zinc-900 border-zinc-700 text-white placeholder:text-zinc-500 h-12"
                   />
                 </div>
               </div>
@@ -125,7 +150,7 @@ export function CTASection() {
               <div className="space-y-2 mb-6">
                 <Label htmlFor="service" className="text-zinc-300">Qual solução te interessa? *</Label>
                 <Select value={formData.service} onValueChange={(value) => handleChange("service", value)} required>
-                  <SelectTrigger className="bg-zinc-900 border-zinc-700 text-white">
+                  <SelectTrigger className="bg-zinc-900 border-zinc-700 text-white h-12">
                     <SelectValue placeholder="Selecione um serviço" />
                   </SelectTrigger>
                   <SelectContent className="bg-zinc-900 border-zinc-700">

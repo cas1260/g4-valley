@@ -1,8 +1,8 @@
-import { Card } from "./ui/card";
-import { Button } from "./ui/button";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { Bot, Database, Users, ShoppingCart, CheckCircle2, ArrowRight } from "lucide-react";
+import { ArrowRight, Bot, CheckCircle2, Database, ShoppingCart, Users } from "lucide-react";
 import { useIsMobile } from "../hooks/useMediaQuery";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
 
 export function ServicesSection() {
   const isMobile = useIsMobile();
@@ -13,7 +13,7 @@ export function ServicesSection() {
       subtitle: "Automação Inteligente",
       descriptionMobile: "Chatbots, assistentes virtuais e automação de processos com IA que trabalham 24/7 para seu negócio",
       descriptionDesktop: "Chatbots inteligentes, assistentes virtuais e automação de processos com IA que trabalham 24/7 para seu negócio. Nossos agentes são treinados especificamente para o seu segmento, entendem contexto, aprendem com interações e executam tarefas complexas automaticamente, desde atendimento ao cliente até análise preditiva de dados, liberando sua equipe para atividades estratégicas.",
-      image: "https://images.unsplash.com/photo-1694903110330-cc64b7e1d21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhcnRpZmljaWFsJTIwaW50ZWxsaWdlbmNlJTIwcm9ib3QlMjBidXNpbmVzc3xlbnwxfHx8fDE3NjMwOTAzOTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      image: "/img/ia-mib.jpg",
       benefits: [
         "Atendimento automatizado ao cliente",
         "Análise inteligente de dados",
@@ -27,14 +27,14 @@ export function ServicesSection() {
       icon: Database,
       title: "ERP Sob Medida",
       subtitle: "Gestão Empresarial",
-      descriptionMobile: "Sistema completo para gerenciar todas as áreas da sua empresa: financeiro, estoque, compras, vendas e muito mais",
-      descriptionDesktop: "Sistema ERP completo desenvolvido sob medida para gerenciar todas as áreas da sua empresa de forma integrada. Controle financeiro, estoque em tempo real, compras, vendas, notas fiscais (NF-e, NFS-e), DARFs, contas a pagar e receber, integração bancária e muito mais. Tudo em uma única plataforma centralizada, com dashboards intuitivos e relatórios gerenciais que transformam dados em decisões estratégicas.",
-      image: "https://images.unsplash.com/photo-1744230673231-865d54a0aba4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGF1dG9tYXRpb24lMjB0ZWNobm9sb2d5fGVufDF8fHx8MTc2MzA4NTY2NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      descriptionMobile: "Sistema completo para gestão unificada: financeiro, estoque, compras, vendas com compliance garantido e redução de erros",
+      descriptionDesktop: "Sistema ERP completo desenvolvido sob medida para gerenciar todas as áreas da sua empresa de forma integrada e unificada. Controle financeiro, estoque em tempo real, compras, vendas, notas fiscais (NF-e, NFS-e), DARFs, contas a pagar e receber, integração bancária e muito mais. Tudo em uma única plataforma centralizada, com dashboards intuitivos e relatórios gerenciais que transformam dados em decisões estratégicas. Compliance garantido, redução drástica de erros operacionais e escalabilidade para acompanhar o crescimento do seu negócio.",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&auto=format&fit=crop&q=80",
       benefits: [
-        "Controle financeiro completo",
-        "Gestão de estoque em tempo real",
+        "Gestão unificada e compliance garantido",
+        "Redução de erros operacionais",
         "Emissão de notas fiscais e DARFs",
-        "Integração com bancos e contabilidade"
+        "Escalabilidade para crescimento"
       ],
       badge: "⚡ Alta Demanda",
       color: "from-blue-500 to-cyan-600"
@@ -43,14 +43,14 @@ export function ServicesSection() {
       icon: Users,
       title: "CRM Inteligente",
       subtitle: "Relacionamento com Clientes",
-      descriptionMobile: "Gerencie seu funil de vendas, automatize follow-ups e nunca perca uma oportunidade de negócio",
-      descriptionDesktop: "Sistema CRM inteligente para gerenciar todo o relacionamento com clientes e pipeline de vendas. Automatize follow-ups, registre todas as interações, acompanhe oportunidades em tempo real e nunca perca uma venda. Com dashboards visuais, relatórios de performance, integração com WhatsApp, e-mail e telefonia, sua equipe comercial terá todas as ferramentas necessárias para vender mais e melhor.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcm0lMjBkYXNoYm9hcmQlMjBhbmFseXRpY3N8ZW58MXx8fHwxNzYzMDkwMzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      descriptionMobile: "Gerencie seu funil de vendas com visualização Kanban, 9 mil automações incluídas e integração com múltiplos canais",
+      descriptionDesktop: "Sistema CRM inteligente para gerenciar todo o relacionamento com clientes e pipeline de vendas. Automatize follow-ups, registre todas as interações, acompanhe oportunidades em tempo real e nunca perca uma venda. Com dashboards visuais, visualização Kanban do pipeline, relatórios de performance, integração com WhatsApp, e-mail e telefonia, sua equipe comercial terá todas as ferramentas necessárias para vender mais e melhor. Inclui mais de 9 mil automações pré-configuradas e integração com múltiplos canais de comunicação.",
+      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&auto=format&fit=crop&q=80",
       benefits: [
-        "Pipeline de vendas visual",
-        "Automação de follow-ups",
-        "Histórico completo de interações",
-        "Relatórios e métricas de vendas"
+        "Pipeline de vendas visual (Kanban)",
+        "9 mil automações incluídas",
+        "Integração com múltiplos canais",
+        "Relatórios e métricas em tempo real"
       ],
       badge: "💼 Essencial",
       color: "from-green-500 to-emerald-600"
@@ -59,14 +59,14 @@ export function ServicesSection() {
       icon: ShoppingCart,
       title: "E-commerce Completo",
       subtitle: "Loja Virtual",
-      descriptionMobile: "Plataforma de vendas online com pagamentos, gestão de produtos, integração com marketplaces e muito mais",
-      descriptionDesktop: "Plataforma completa de e-commerce para vender online 24/7. Gateway de pagamento integrado (cartão, PIX, boleto), gestão completa de produtos e categorias, controle de estoque sincronizado, cálculo automático de frete, cupons de desconto, integração com marketplaces (Mercado Livre, Amazon, B2W), redes sociais e ferramentas de marketing digital. Tudo para escalar suas vendas online rapidamente.",
-      image: "https://images.unsplash.com/photo-1658297063569-162817482fb6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlY29tbWVyY2UlMjBvbmxpbmUlMjBzaG9wcGluZ3xlbnwxfHx8fDE3NjMwOTAzOTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      descriptionMobile: "Plataforma de vendas online com design responsivo, personalização total e suporte completo para escalar suas vendas",
+      descriptionDesktop: "Plataforma completa de e-commerce para vender online 24/7 com design responsivo e personalização total. Gateway de pagamento integrado (cartão, PIX, boleto), gestão completa de produtos e categorias, controle de estoque sincronizado, cálculo automático de frete, cupons de desconto, integração com marketplaces (Mercado Livre, Amazon, B2W), redes sociais e ferramentas de marketing digital. Tudo para escalar suas vendas online rapidamente com suporte completo em todas as etapas.",
+      image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&auto=format&fit=crop&q=80",
       benefits: [
-        "Catálogo de produtos ilimitado",
+        "Design responsivo e personalização total",
         "Gateway de pagamento integrado",
-        "Gestão de pedidos e entregas",
-        "Integração com redes sociais"
+        "Integração com marketplaces",
+        "Suporte completo para crescimento"
       ],
       badge: "🚀 Escalável",
       color: "from-amber-500 to-orange-600"
@@ -79,10 +79,10 @@ export function ServicesSection() {
   };
 
   return (
-    <section className="relative py-20" id="servicos">
+    <section className="relative py-12 md:py-20" id="servicos">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="text-center mb-16">
-          <h2 className="text-white mb-4" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>
+          <h2 className="text-white mb-4 mt-[15px]" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>
             Soluções Que{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-600">
               Transformam Negócios
@@ -97,23 +97,39 @@ export function ServicesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 gap-8 mb-12">
           {services.slice(0, 3).map((service, index) => {
             const Icon = service.icon;
+            const isIACard = service.title === "Agentes de IA Personalizados";
+            
             return (
               <Card
                 key={index}
                 className="group bg-zinc-900/50 border-zinc-800 overflow-hidden hover:border-amber-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-amber-500/10"
               >
-                <div className="grid md:grid-cols-2 gap-0">
-                  {/* Image Side */}
-                  <div className="relative h-64 md:h-auto overflow-hidden">
-                    <ImageWithFallback
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/80 to-zinc-900/40" />
+                <div className={`grid md:grid-cols-2 gap-0 ${isIACard ? 'md:grid-cols-[1.2fr_1fr]' : ''}`}>
+                  {/* Image Side - Primeiro no Mobile, Segundo no Desktop */}
+                  <div className="relative h-48 sm:h-56 md:h-auto overflow-hidden md:order-2">
+                    {isIACard ? (
+                      <>
+                        <img
+                          src="https://www.bhs.com.br/wp-content/uploads/2025/08/PostBlog.png"
+                          alt="Agente de IA em escritório"
+                          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                          style={{ objectPosition: 'center center' }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/30 to-zinc-900/10" />
+                      </>
+                    ) : (
+                      <>
+                        <ImageWithFallback
+                          src={service.image}
+                          alt={service.title}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/80 to-zinc-900/40" />
+                      </>
+                    )}
                     
                     <div className="absolute top-4 left-4">
                       <span className="text-xs bg-amber-500/20 border border-amber-500/30 text-amber-400 px-3 py-1 rounded-full backdrop-blur-sm">
@@ -126,12 +142,12 @@ export function ServicesSection() {
                     </div>
                   </div>
 
-                  {/* Content Side */}
-                  <div className="p-6 flex flex-col">
+                  {/* Content Side - Segundo no Mobile, Primeiro no Desktop */}
+                  <div className={`p-6 md:p-8 flex flex-col md:order-1 ${isIACard ? 'md:justify-center' : ''}`}>
                     <div className="mb-4">
                       <div className="text-amber-500 text-sm mb-2">{service.subtitle}</div>
-                      <h3 className="text-white mb-3" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>{service.title}</h3>
-                      <p className="text-zinc-400 text-sm leading-relaxed text-justify" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>
+                      <h3 className="text-white mb-3 text-xl md:text-2xl" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>{service.title}</h3>
+                      <p className="text-zinc-400 text-sm md:text-base leading-relaxed text-justify" style={{ textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)' }}>
                         {isMobile ? service.descriptionMobile : service.descriptionDesktop}
                       </p>
                     </div>
@@ -140,7 +156,7 @@ export function ServicesSection() {
                       {service.benefits.map((benefit, i) => (
                         <div key={i} className="flex items-start gap-2">
                           <CheckCircle2 className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-                          <span className="text-zinc-300 text-sm">{benefit}</span>
+                          <span className="text-zinc-300 text-sm md:text-base">{benefit}</span>
                         </div>
                       ))}
                     </div>
@@ -162,7 +178,7 @@ export function ServicesSection() {
         {/* Additional Services */}
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-8 shadow-xl">
           <h3 className="text-white text-center mb-6">Também Desenvolvemos</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {[
               "APIs e Integrações",
               "Dashboards Analytics",

@@ -1,0 +1,199 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║              🎉 BUILD FINAL - PASTA NOVIDADES_FINAL 🎉                       ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Data/Hora: 16/11/2025 13:52
+Pasta: novidades_final/ (920 KB)
+Status: ✅ COMPLETO E PRONTO PARA UPLOAD
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ OBSERVAÇÃO IMPORTANTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+A pasta antiga "novidades/" tem problemas de permissão (criada como root).
+Por isso, o novo build foi criado na pasta "novidades_final/".
+
+SOLUÇÃO:
+1. Fazer upload da pasta "novidades_final/" para o servidor
+2. No servidor, deletar a pasta "novidades/" antiga
+3. Renomear "novidades_final/" para "novidades/"
+
+OU
+
+1. Deletar manualmente a pasta "novidades/" antiga no Mac
+2. Renomear "novidades_final/" para "novidades/" localmente
+3. Fazer upload da pasta "novidades/"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ CONTEÚDO DO BUILD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📦 FRONTEND (576 KB)
+├── index.html (2.3 KB)
+├── .htaccess (1.2 KB) ✅ INCLUÍDO
+└── assets/
+    ├── index-DCtzCENr.js (411 KB → 125 KB gzip) ⚡ COM ANALYTICS
+    ├── index-CMewUhvl.css (60 KB → 9.5 KB gzip) 🎨
+    ├── fundo-Bjp9AddM.svg (5.4 KB)
+    └── 8a571c4c186a45dd4a865f0b057c6a16f2aebabc-D_QKezvF.png (100 KB)
+
+📦 BACKEND (344 KB)
+└── server/
+    ├── PHPMailer.php (187 KB) ✨
+    ├── SMTP.php (52 KB) ✨
+    ├── PHPMailerException.php (1.2 KB) ✨
+    ├── smtp-config.php (2.2 KB) ✅ CONFIGURADO SWAPSOFT
+    ├── contact.php (8.5 KB)
+    ├── database.php (15 KB)
+    ├── visitor.php (733 B) ✅ Analytics
+    ├── stats.php (491 B) ✅ Dashboard
+    └── Todos os arquivos de analytics
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ CONFIGURAÇÕES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SMTP:
+✓ Servidor: mail.swapsoft.com.br
+✓ Porta: 465 (SSL)
+✓ Usuário: cleber@swapsoft.com.br
+✓ Senha: Lopasz99@@
+✓ Destinatário: cleber@swapsoft.com.br
+
+ANALYTICS:
+✓ useAnalytics() ativo
+✓ trackFormSubmission() ativo
+✓ Rastreamento completo
+✓ Dashboard: /novidades/statics
+
+BANCO DE DADOS:
+✓ SQLite
+✓ Tabelas: contacts, visitors, pageviews, events, form_submissions
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 INSTRUÇÕES DE UPLOAD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+OPÇÃO 1 - Renomear no Servidor (RECOMENDADO):
+
+1. Fazer upload da pasta "novidades_final/" para o servidor
+2. Acessar servidor via SSH ou cPanel File Manager
+3. Deletar pasta "novidades/" antiga
+4. Renomear "novidades_final/" para "novidades/"
+5. Verificar permissões:
+   - Arquivos: 644
+   - Pastas: 755
+6. Testar: https://swapsoft.com.br/novidades/
+
+OPÇÃO 2 - Renomear Localmente:
+
+1. Abrir Terminal no Mac
+2. Executar: sudo rm -rf novidades
+3. Executar: mv novidades_final novidades
+4. Fazer upload da pasta "novidades/"
+5. Testar: https://swapsoft.com.br/novidades/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🧪 TESTES PÓS-UPLOAD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. LANDING PAGE
+   [ ] https://swapsoft.com.br/novidades/
+   [ ] Página carrega
+   [ ] Imagens aparecem
+   [ ] Layout responsivo
+
+2. FORMULÁRIO
+   [ ] Preencher e enviar
+   [ ] Toast de sucesso
+   [ ] E-mail chega em cleber@swapsoft.com.br
+
+3. ANALYTICS
+   [ ] Console sem erros (F12)
+   [ ] Visitantes sendo registrados
+   [ ] Cliques sendo capturados
+
+4. DASHBOARD
+   [ ] https://swapsoft.com.br/novidades/statics
+   [ ] Estatísticas aparecem
+   [ ] Dados em tempo real
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 ESTATÍSTICAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Tamanho: 920 KB
+Otimizado (gzip): ~137 KB (85% redução)
+Build: 1.41s
+Módulos: 1710
+
+Performance:
+• JS: 411 KB → 125 KB (gzip) - 70% redução
+• CSS: 60 KB → 9.5 KB (gzip) - 84% redução
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 LIMPEZA DE PASTAS ANTIGAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pastas que podem ser deletadas após upload bem-sucedido:
+• dist/ (build temporário do Vite)
+• dist.old/ (build antigo)
+• upload/ (build anterior)
+• novidades/ (pasta antiga com problemas de permissão)
+• novidades_dist_rodando_sem_back/ (teste antigo)
+
+MANTER:
+• novidades_final/ (até confirmar upload bem-sucedido)
+• src/ (código-fonte)
+• server/ (backend original)
+• public/ (assets públicos)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ CHECKLIST FINAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[✓] Build gerado com sucesso
+[✓] Analytics funcionando
+[✓] SMTP configurado (SwapSoft)
+[✓] Frontend completo (576 KB)
+[✓] Backend completo (344 KB)
+[✓] .htaccess incluído
+[✓] Pasta novidades_final/ pronta (920 KB)
+[ ] Fazer upload
+[ ] Renomear para "novidades/"
+[ ] Testar todas as funcionalidades
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 RESUMO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Landing Page: G4 Valley 2025 - SwapSoft
+Pasta: novidades_final/ (920 KB)
+Status: ✅ PRONTO PARA UPLOAD
+
+Funcionalidades:
+✓ Landing page completa
+✓ Formulário de contato
+✓ E-mail SMTP
+✓ Analytics completo
+✓ Dashboard de estatísticas
+✓ Banco de dados SQLite
+✓ 100% responsivo
+
+Próximo passo:
+1. Upload da pasta "novidades_final/"
+2. Renomear para "novidades/" no servidor
+3. Testar em: https://swapsoft.com.br/novidades/
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    🎉 TUDO PRONTO! 🚀                                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
