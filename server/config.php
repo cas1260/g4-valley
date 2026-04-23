@@ -4,7 +4,12 @@ define('DB_PATH', __DIR__ . '/analytics.db');
 define('ALLOWED_ORIGINS', [
     'http://localhost:3000',
     'http://localhost:5173',
-    'https://swapsoft.com.br',
+    'http://localhost:4173',
+    'http://127.0.0.1:4173',
+    'http://webfinan.com.br',
+    'http://www.webfinan.com.br',
+    'https://webfinan.com.br',
+    'https://www.webfinan.com.br',
 ]);
 
 // Headers CORS

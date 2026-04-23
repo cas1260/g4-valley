@@ -6,10 +6,12 @@ import { StatisticsPage } from './pages/StatisticsPage.tsx';
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter basename="/novidades">
+  <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/statics" element={<StatisticsPage />} />
+      <Route path="/novidades" element={<App />} />
+      <Route path="/novidades/statics" element={<StatisticsPage />} />
     </Routes>
   </BrowserRouter>
 );

@@ -5,6 +5,7 @@ import heroDashboard from "./assets/codex/hero-dashboard-mUCvxTeXHmJjs9esmFeMQU.
 import flowBuilder from "./assets/codex/flow-builder-MgWNZ3nzQUtMf22WKKzMHC.webp";
 import whatsappCrm from "./assets/codex/whatsapp-crm-5cifzaxxyxLemNC284mcGW.webp";
 import aiAgents from "./assets/codex/ai-agents-5abfxD2S2F2pPKhrzzxsjA.webp";
+import whatsappFloatIcon from "./assets/whatsapp-float-icon.svg";
 
 function IconSvg({ children }: { children: ReactNode }) {
   return <svg viewBox="0 0 24 24">{children}</svg>;
@@ -123,6 +124,9 @@ const operations = [
 ];
 
 const priorityOptions = ["Perco pedidos ou clientes", "Meu WhatsApp esta baguncado", "Nao tenho clareza do dinheiro", "Meu estoque da trabalho", "Quero organizar a empresa toda"];
+const contactEndpoint = "/server/api/contact";
+const whatsappUrl = "https://wa.me/5531999669399";
+type SubmitStatus = "idle" | "sending" | "success" | "error";
 
 function valueOrFallback(value: FormDataEntryValue | null, fallback: string) {
   const clean = typeof value === "string" ? value.trim() : "";
@@ -144,6 +148,26 @@ function buildBriefing(formData: FormData) {
     `Principal problema: ${prioridade}`,
     `O que esta acontecendo: ${necessidade}`,
   ].join("\n");
+}
+
+function buildContactPayload(formData: FormData, briefing: string) {
+  const nome = valueOrFallback(formData.get("nome"), "");
+  const empresa = valueOrFallback(formData.get("empresa"), "");
+  const contato = valueOrFallback(formData.get("contato"), "");
+  const prioridade = valueOrFallback(formData.get("prioridade"), "Quero organizar a empresa toda");
+  const necessidade = valueOrFallback(formData.get("necessidade"), "");
+  const email = contato.includes("@") ? contato : "";
+
+  return {
+    name: nome,
+    company: empresa,
+    phone: contato,
+    email,
+    service: prioridade,
+    message: necessidade,
+    briefing,
+    source: "webfinan.com.br",
+  };
 }
 
 async function copyText(text: string) {
@@ -170,6 +194,8 @@ export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [briefing, setBriefing] = useState("");
   const [copyLabel, setCopyLabel] = useState("Copiar resumo");
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
+  const [submitMessage, setSubmitMessage] = useState("");
   const year = useMemo(() => new Date().getFullYear(), []);
 
   useEffect(() => {
@@ -247,10 +273,34 @@ export default function App() {
     setMenuOpen(false);
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setBriefing(buildBriefing(new FormData(event.currentTarget)));
+    const formData = new FormData(event.currentTarget);
+    const nextBriefing = buildBriefing(formData);
+    setBriefing(nextBriefing);
     setCopyLabel("Copiar resumo");
+    setSubmitStatus("sending");
+    setSubmitMessage("Enviando seus dados para a Webajato...");
+
+    try {
+      const response = await fetch(contactEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildContactPayload(formData, nextBriefing)),
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || data?.success === false) {
+        throw new Error(data?.error || "Nao foi possivel enviar o formulario.");
+      }
+
+      setSubmitStatus("success");
+      setSubmitMessage("Dados enviados para a Webajato. Em breve entraremos em contato.");
+    } catch {
+      setSubmitStatus("error");
+      setSubmitMessage("Nao foi possivel enviar agora. Copie o resumo e chame a Webajato pelo WhatsApp.");
+    }
   }
 
   async function handleCopyBriefing() {
@@ -338,13 +388,16 @@ export default function App() {
             <label>Contato<input type="text" name="contato" autoComplete="tel" placeholder="WhatsApp ou e-mail" /></label>
             <label>O que mais atrapalha hoje?<select name="prioridade" defaultValue="Quero organizar a empresa toda">{priorityOptions.map((option) => <option value={option} key={option}>{option}</option>)}</select></label>
             <label className="wide">Explique em poucas palavras<textarea name="necessidade" rows={4} placeholder="Ex.: perco pedidos no WhatsApp, nao sei meu lucro, estoque da trabalho..." /></label>
-            <div className="form-actions"><button className="button primary" type="submit">Montar pedido de demonstracao</button><button className="button secondary" type="button" onClick={handleCopyBriefing} disabled={!briefing}>{copyLabel}</button></div>
-            <output className={`briefing-output${briefing ? " is-visible" : ""}`} aria-live="polite">{briefing ? `${briefing}\n\nResumo gerado. Copie e envie para o time comercial da Webajato.` : ""}</output>
+            <div className="form-actions"><button className="button primary" type="submit" disabled={submitStatus === "sending"}>{submitStatus === "sending" ? "Enviando..." : "Montar pedido de demonstracao"}</button><button className="button secondary" type="button" onClick={handleCopyBriefing} disabled={!briefing}>{copyLabel}</button></div>
+            <output className={`briefing-output${briefing || submitMessage ? " is-visible" : ""}${submitStatus === "error" ? " is-error" : ""}`} aria-live="polite">{briefing || submitMessage ? `${submitMessage ? `${submitMessage}\n\n` : ""}${briefing}` : ""}</output>
           </form>
         </section>
       </main>
 
       <footer className="site-footer"><img src={logoWebajato} alt="Webajato" /><p>WebFinan, sistema da Webajato para organizar vendas, atendimento, financeiro e rotina da empresa.</p><span>{year}</span></footer>
+      <a className="whatsapp-float" href={whatsappUrl} target="_blank" rel="noopener noreferrer" aria-label="Chamar a Webajato no WhatsApp">
+        <img src={whatsappFloatIcon} alt="" aria-hidden="true" />
+      </a>
     </div>
   );
 }

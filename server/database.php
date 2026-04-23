@@ -478,6 +478,16 @@ class AnalyticsDB {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function exportAllData() {
+        return [
+            'visitors' => $this->db->query("SELECT * FROM visitors ORDER BY last_visit DESC")->fetchAll(PDO::FETCH_ASSOC),
+            'pageViews' => $this->db->query("SELECT * FROM page_views ORDER BY timestamp DESC")->fetchAll(PDO::FETCH_ASSOC),
+            'events' => $this->db->query("SELECT * FROM events ORDER BY timestamp DESC")->fetchAll(PDO::FETCH_ASSOC),
+            'formSubmissions' => $this->db->query("SELECT * FROM form_submissions ORDER BY timestamp DESC")->fetchAll(PDO::FETCH_ASSOC),
+            'contacts' => $this->db->query("SELECT * FROM contacts ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC),
+        ];
+    }
+
     // ========================================================================
     // MÉTODOS AUXILIARES
     // ========================================================================

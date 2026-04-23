@@ -4782,9 +4782,9 @@ p {
 }
 
 @media (max-width: 760px) {
-  .codex-site .module-grid {
-    grid-template-columns: 1fr;
-  }
+.codex-site .module-grid {
+  grid-template-columns: 1fr;
+}
 
   .codex-site .module,
   .codex-site .module:nth-child(1),
@@ -4801,5 +4801,53 @@ p {
     margin-top: 14px;
     padding-top: 14px;
     font-size: 1.04rem;
+  }
+}
+
+/* Ajustes WhatsApp e retorno do formulario */
+.codex-site .button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
+}
+
+.codex-site .briefing-output.is-error {
+  border-color: rgba(255, 190, 64, 0.55);
+  color: #ffe2a3;
+}
+
+.codex-site .whatsapp-float {
+  position: fixed;
+  right: max(18px, calc((100vw - var(--max)) / 2));
+  bottom: 22px;
+  z-index: 60;
+  display: grid;
+  width: 74px;
+  height: 74px;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.codex-site .whatsapp-float:hover {
+  transform: translateY(-3px) scale(1.04);
+  filter: brightness(1.08);
+}
+
+.codex-site .whatsapp-float img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 760px) {
+  .codex-site .whatsapp-float {
+    right: 16px;
+    bottom: 16px;
+    width: 64px;
+    height: 64px;
   }
 }
