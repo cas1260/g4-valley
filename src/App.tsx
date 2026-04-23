@@ -308,8 +308,8 @@ export default function App() {
         </section>
 
         <section className="section platform" id="plataforma">
-          <div className="section-copy" data-reveal><p className="eyebrow">O que muda na pratica</p><h2>Voce para de procurar informacao em todo lugar.</h2><p>O WebFinan pega as partes soltas da rotina e coloca em uma visao simples: pedido, cliente, dinheiro, estoque e atendimento.</p></div>
-          <div className="platform-rail" data-reveal>{platformItems.map((item) => <div key={item.number}><span>{item.number}</span><strong>{item.title}</strong><p>{item.text}</p></div>)}</div>
+          <div className="section-copy" data-reveal><p className="eyebrow">O que muda na pratica</p><h2>Voce para de procurar informacao em todo lugar.</h2></div>
+          <div className="platform-rail" data-reveal>{platformItems.map((item) => <div key={item.number}><span>{item.number}</span><strong>{item.title}</strong><p>{item.text}</p></div>)}<p className="platform-summary">O WebFinan pega as partes soltas da rotina e coloca em uma visao simples: pedido, cliente, dinheiro, estoque e atendimento.</p></div>
         </section>
 
         <section className="section modules" id="modulos">
