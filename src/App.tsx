@@ -346,7 +346,7 @@ export default function App() {
           <div className="hero-copy" data-reveal>
             <p className="eyebrow">Sistema simples para sua empresa ganhar ordem</p>
             <h1>WebFinan</h1>
-            <h2>Venda, atenda e controle sua empresa sem depender de planilhas.</h2>
+            <h2>Venda, atenda e controle sua empresa sem depender de <span>planilhas.</span></h2>
             <p className="hero-text">O WebFinan foi criado pela Webajato para colocar vendas, WhatsApp, estoque e financeiro em ordem. Voce enxerga a rotina, sua equipe trabalha melhor e o cliente recebe resposta.</p>
             <div className="hero-actions"><a className="button primary" href="#contato">Quero uma demonstracao</a><a className="button secondary" href="#modulos">Ver como ajuda</a></div>
           </div>
