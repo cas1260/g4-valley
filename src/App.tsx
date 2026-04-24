@@ -1,7 +1,7 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
+import { CircleHelp, Rocket, TrendingUp } from "lucide-react";
 import logoWebajato from "./assets/codex/logo-webajato-9yG1tTyu.png";
-import heroDashboard from "./assets/codex/hero-dashboard-mUCvxTeXHmJjs9esmFeMQU.webp";
 import flowBuilder from "./assets/codex/flow-builder-MgWNZ3nzQUtMf22WKKzMHC.webp";
 import whatsappCrm from "./assets/codex/whatsapp-crm-5cifzaxxyxLemNC284mcGW.webp";
 import aiAgents from "./assets/codex/ai-agents-5abfxD2S2F2pPKhrzzxsjA.webp";
@@ -346,11 +346,44 @@ export default function App() {
           <div className="hero-copy" data-reveal>
             <p className="eyebrow">Sistema simples para sua empresa ganhar ordem</p>
             <h1>WebFinan</h1>
-            <h2>Venda, atenda e controle sua empresa sem depender de <span>planilhas.</span></h2>
+            <h2><span>Venda,</span> atenda e controle sua empresa sem depender de <span>planilhas.</span></h2>
             <p className="hero-text">O WebFinan foi criado pela Webajato para colocar vendas, WhatsApp, estoque e financeiro em ordem. Voce enxerga a rotina, sua equipe trabalha melhor e o cliente recebe resposta.</p>
-            <div className="hero-actions"><a className="button primary" href="#contato">Quero uma demonstracao</a><a className="button secondary" href="#modulos">Ver como ajuda</a></div>
+            <div className="hero-actions"><a className="button primary" href="#contato"><Rocket aria-hidden="true" />Quero uma demonstracao</a><a className="button secondary" href="#modulos"><CircleHelp aria-hidden="true" />Ver como ajuda</a></div>
           </div>
-          <figure className="hero-visual" data-reveal><img src={heroDashboard} alt="Painel visual do sistema WebFinan" /><figcaption>Um lugar para acompanhar vendas, atendimento e controle da empresa.</figcaption></figure>
+          <figure className="hero-visual" data-reveal aria-label="Painel visual do sistema WebFinan">
+            <div className="clay-app-window" aria-hidden="true">
+              <div className="clay-window-dots"><span /><span /><span /></div>
+              <section className="clay-chat-panel">
+                <h3>Chats</h3>
+                <div className="clay-chat-row"><span>JC</span><strong>Joao Cliente</strong><small>10:30</small><em>Pode me enviar...</em></div>
+                <div className="clay-chat-row"><span>MC</span><strong>Maria Corretora</strong><small>10:28</small><em>Pedido aprovado!</em></div>
+                <div className="clay-chat-row"><span>EV</span><strong>Equipe Vendas</strong><small>10:20</small><em>Meta do mes atualizada</em></div>
+                <div className="clay-chat-row"><span>FO</span><strong>Fornecedor</strong><small>09:15</small><em>Nota fiscal enviada</em></div>
+                <div className="clay-chat-row muted"><span>CV</span><strong>Cliente VIP</strong><small>Ontem</small><em>Obrigado pelo atendimento!</em></div>
+                <footer>Ver todas as conversas <b>8</b></footer>
+              </section>
+              <section className="clay-flow-panel">
+                <header><div><h3>Automation Flow</h3><p>Fluxo: Vendas</p></div><span /><span /><span /></header>
+                <div className="clay-flow-board">
+                  <b className="node node-blue n1">Novo Lead</b>
+                  <b className="node node-blue n2">Qualificar Lead</b>
+                  <b className="node node-purple n3">Proposta Enviada</b>
+                  <b className="node node-purple n4">Follow Up</b>
+                  <b className="node node-green n5">Aguard. Cliente</b>
+                  <b className="node node-purple n6">Pedido Pago</b>
+                  <b className="node node-blue n7">Venda Finalizada</b>
+                  <i className="line l1" /><i className="line l2" /><i className="line l3" /><i className="line l4" /><i className="line l5" /><i className="line l6" />
+                </div>
+              </section>
+              <aside className="clay-metrics">
+                <div><strong>Receita</strong><b>$58,250</b><span>+13.5%</span><i className="chart chart-line" /></div>
+                <div><strong>Novos Leads</strong><b>1,278</b><span>+8.4%</span><i className="chart chart-bars" /></div>
+                <div><strong>Sales Pipeline</strong><b>$320,800</b><span>+9.7%</span></div>
+                <div><strong>Clientes Satisfeitos</strong><b>92%</b><em>*****</em></div>
+              </aside>
+            </div>
+            <figcaption><TrendingUp aria-hidden="true" /><span>Um lugar para acompanhar vendas, atendimento e controle da empresa.</span></figcaption>
+          </figure>
         </section>
 
         <section className="proof-strip" aria-label="Pilares da plataforma">
