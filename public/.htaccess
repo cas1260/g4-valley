@@ -1,13 +1,12 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
 
   # Se o arquivo ou diretorio existe, servir diretamente
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
 
   # Caso contrario, redirecionar para index.html (React Router)
-  RewriteRule . /index.html [L]
+  RewriteRule . index.html [L]
 </IfModule>
 
 # Habilitar compressao Gzip

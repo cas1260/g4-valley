@@ -5,8 +5,15 @@ import App from "./App.tsx";
 import { StatisticsPage } from './pages/StatisticsPage.tsx';
 import "./index.css";
 
+function getRouterBaseName() {
+  const modulePath = new URL(import.meta.url).pathname;
+  const basePath = modulePath.replace(/\/assets\/[^/]+$/, '');
+
+  return !basePath || basePath === '/' || basePath === modulePath ? undefined : basePath.replace(/\/$/, '');
+}
+
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
+  <BrowserRouter basename={getRouterBaseName()}>
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/statics" element={<StatisticsPage />} />

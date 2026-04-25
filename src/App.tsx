@@ -123,8 +123,17 @@ const operations = [
   { title: "Mais tempo", text: "A rotina fica mais leve para sua equipe focar no cliente." },
 ];
 
+function getRuntimeBasePath() {
+  const script = document.querySelector('script[type="module"][src*="/assets/"]') as HTMLScriptElement | null;
+  const source = script?.src || import.meta.url;
+  const modulePath = new URL(source, window.location.href).pathname;
+  const basePath = modulePath.replace(/\/assets\/[^/]+$/, '');
+
+  return basePath === '/' || basePath === modulePath ? '' : basePath.replace(/\/$/, '');
+}
+
 const priorityOptions = ["Perco pedidos ou clientes", "Meu WhatsApp esta baguncado", "Nao tenho clareza do dinheiro", "Meu estoque da trabalho", "Quero organizar a empresa toda"];
-const contactEndpoint = "/server/api/contact";
+const contactEndpoint = `${getRuntimeBasePath()}/server/api/contact`;
 const whatsappUrl = "https://wa.me/5531999669399";
 type SubmitStatus = "idle" | "sending" | "success" | "error";
 

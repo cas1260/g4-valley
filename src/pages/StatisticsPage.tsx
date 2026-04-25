@@ -46,9 +46,18 @@ interface Stats {
 }
 
 const analyticsApiBases = [
-  '/server/api/analytics',
-  '/novidades/server/api/analytics',
+  `${getRuntimeBasePath()}/server/api/analytics`,
+  `${getRuntimeBasePath()}/novidades/server/api/analytics`,
 ];
+
+function getRuntimeBasePath() {
+  const script = document.querySelector('script[type="module"][src*="/assets/"]') as HTMLScriptElement | null;
+  const source = script?.src || import.meta.url;
+  const modulePath = new URL(source, window.location.href).pathname;
+  const basePath = modulePath.replace(/\/assets\/[^/]+$/, '');
+
+  return basePath === '/' || basePath === modulePath ? '' : basePath.replace(/\/$/, '');
+}
 
 function emptyStats(): Stats {
   return {
